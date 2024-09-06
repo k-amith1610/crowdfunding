@@ -3,10 +3,12 @@ import { Route, Routes } from "react-router-dom"
 
 import { CampaignDetails, CreateCampaign, Profile, Home } from './pages'
 import { Navbar, Sidebar } from './components'
+import Pointer from './components/Pointer'
 
 const App = () => {
   return (
     <div className="relative sm:p-8 p-4 bg-[#131318] min-h-screen flex flex-row">
+      <Pointer />
       <div className="sm:flex hidden mr-10 relative">
         <Sidebar />
       </div>

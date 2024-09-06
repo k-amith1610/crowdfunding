@@ -4,7 +4,7 @@ import { logo, sun } from "../assets";
 import { navlinks } from "../constants";
 import gsap from "gsap";
 import { useGSAP } from '@gsap/react';
-import Pointer from './Pointer';
+// import Pointer from './Pointer';
 
 const Icon = ({ id, styles, name, imgUrl, isActive, disabled, handleClick }) => {
   return (
@@ -70,7 +70,7 @@ const Sidebar = () => {
       className="flex justify-between items-center 
         flex-col sticky top-5 h-[93vh]"
     >
-      <Pointer />
+      {/* <Pointer /> */}
       <Link to="/">
         <Icon
           id="logo"

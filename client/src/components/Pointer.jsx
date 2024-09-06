@@ -26,8 +26,8 @@ const Pointer = () => {
         <>
             <div
                 id="pointer"
-                className="top-0 left-0 bg-green-500 w-[15px] h-[15px] rounded-full
-                        fixed z-10 blur-[0.5px] shadow-secondary shadow-green-300"
+                className="fixed hidden md:flex top-0 left-0 bg-green-500 w-[15px] h-[15px] rounded-full
+                            z-10 blur-[0.5px] shadow-secondary shadow-green-300"
             >
 
             </div>
