@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom"
 import { CustomButton } from "./"
 import { logo, menu, search, thirdweb } from '../assets'
 import { navlinks } from '../constants'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
 
 const Navbar = () => {
 
@@ -12,6 +14,34 @@ const Navbar = () => {
 
   const address = '0xabc'
 
+
+  useGSAP(() => {
+    var tl = gsap.timeline({ delay: 0.5 })
+    tl.from("#searchbar", {
+      opacity: 0,
+      y: -20,
+      // duration: 0.6,
+    })
+    tl.from("#searchinput", {
+      opacity: 0,
+      y: -20,
+      // duration: 0.6,
+    })
+    tl.from("#searchbutton", {
+      opacity: 0,
+      y: -20,
+      // duration: 0.6,
+    })
+    tl.from("#custombutton", {
+      opacity: 0,
+      y: -20,
+    })
+    tl.from("#thirdweb", {
+      opacity: 0,
+      y: -20,
+    })
+  })
+
   return (
     <div
       className="flex md:flex-row flex-col-reverse 
@@ -20,16 +50,19 @@ const Navbar = () => {
       <div
         className="lg:flex-1 flex flex-row mx-w-[458px] 
                     py-2 pl-4 pr-2 h-[52px] bg-[#1c1c24] rounded-[100px]"
+        id="searchbar"
       >
         <input
           type="text"
           placeholder="Search for campaigns"
           className="flex w-full font-epilogue font-normal text-[14px] placeholder:text-[#4b5264]
                         text-white bg-transparent outline-none"
+          id="searchinput"
         />
         <div
           className="w-[72px] h-full rounded-[20px] bg-[#4acd8d] flex justify-center
                         items-center cursor-pointer z-10"
+          id="searchbutton"
         >
           <img
             src={search}
@@ -49,6 +82,7 @@ const Navbar = () => {
             if (address) navigate('create-campaign')
             else 'connect()'
           }}
+          id="custombutton"
         />
 
         <Link
@@ -57,6 +91,7 @@ const Navbar = () => {
           <div
             className="w-[52px] h-[52px] rounded-[10px]
                       bg-[#2c2f32] flex justify-center items-center cursor-pointer"
+            id="thirdweb"
           >
             <img
               src={thirdweb}
@@ -131,6 +166,7 @@ const Navbar = () => {
                 if (address) navigate('create-campaign')
                 else 'connect()'
               }}
+              id="custombutton"
             />
           </div>
         </div>

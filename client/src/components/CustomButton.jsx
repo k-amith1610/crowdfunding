@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CustomButton = ({ btnType, title, handleClick, styles }) => {
+const CustomButton = ({ btnType, title, handleClick, styles, id }) => {
   return (
     <button
       type={btnType}
@@ -8,6 +8,7 @@ const CustomButton = ({ btnType, title, handleClick, styles }) => {
                   leading-[20px] text-white min-h-[52px] px-4
                   rounded-[10px] z-10`}
       onClick={handleClick}
+      id={id}
     > 
       {title}
     </button>
