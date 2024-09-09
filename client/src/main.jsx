@@ -3,7 +3,8 @@ import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';
 import { ThirdwebProvider } from "@thirdweb-dev/react";
-import {BrowserRouter as Router} from "react-router-dom"
+import { BrowserRouter as Router } from "react-router-dom";
+import { StateContextProvider } from "./context";
 
 // Define a JavaScript object to hold the chain IDs
 const ChainId = {
@@ -26,10 +27,17 @@ const ChainId = {
   Sepolia: 11155111,
 };
 
+const clientId = 'bfd82e95d903d62fad36daa4a003ded0';
+
 createRoot(document.getElementById('root')).render(
-  <ThirdwebProvider desiredChainId={ChainId.Sepolia}>
+  <ThirdwebProvider
+    activeChain={ChainId.Sepolia}
+    clientId={clientId}
+  >
     <Router>
-      <App />
+      <StateContextProvider>
+        <App />
+      </StateContextProvider>
     </Router>
   </ThirdwebProvider>
 );

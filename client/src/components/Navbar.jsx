@@ -5,14 +5,14 @@ import { logo, menu, search, thirdweb } from '../assets'
 import { navlinks } from '../constants'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+import { useStateContext } from '../context'
 
 const Navbar = () => {
 
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState("dashboard");
   const [toggleDrawer, setToggleDrawer] = useState(false);
-
-  const address = '0xabc'
+  const { connect, address } = useStateContext();
 
 
   useGSAP(() => {
@@ -79,8 +79,11 @@ const Navbar = () => {
           title={address ? 'Create a campaign' : 'Connect'}
           styles={address ? 'bg-[#1dc071]' : 'bg-[#8c6dfd]'}
           handleClick={() => {
-            if (address) navigate('create-campaign')
-            else 'connect()'
+            if (address) {
+              console.log(address);
+              navigate('create-campaign')
+            }
+            else connect()
           }}
           id="custombutton"
         />
@@ -112,7 +115,7 @@ const Navbar = () => {
                       bg-[#2c2f32] flex justify-center items-center cursor-pointer"
         >
           <img
-            src={thirdweb}
+            src={logo}
             alt="user"
             className="w-[60%] h-[60%] object-contain"
           />
@@ -163,8 +166,11 @@ const Navbar = () => {
               title={address ? 'Create a campaign' : 'Connect'}
               styles={address ? 'bg-[#1dc071]' : 'bg-[#8c6dfd]'}
               handleClick={() => {
-                if (address) navigate('create-campaign')
-                else 'connect()'
+                if (address) {
+                  console.log(address);
+                  navigate('create-campaign')
+                }
+                else connect();
               }}
               id="custombutton"
             />
