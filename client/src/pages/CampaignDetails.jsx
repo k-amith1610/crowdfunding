@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { ethers } from "ethers"
 import { useStateContext } from "../context"
-import { CountBox, CustomButton } from "../components"
+import { CountBox, CustomButton, Loader } from "../components"
 import { calculateBarPercentage, daysLeft } from "../utils"
 import { thirdweb } from "../assets"
 
 const CampaignDetails = () => {
 
+  const navigate = useNavigate();
   const { state } = useLocation();
   const { donate, getDonations, contract, address } = useStateContext();
 
@@ -32,12 +33,13 @@ const CampaignDetails = () => {
   const handleDonate = async () => {
     setIsLoading(true);
     await donate(state.pId, amount);
+    navigate("/");
     setIsLoading(false);
   }
 
   return (
     <div>
-      {isLoading && 'Loading...'}
+      {isLoading && <Loader />}
 
       <div
         className="w-full flex md:flex-row flex-col mt-10 gap-[30px]"
