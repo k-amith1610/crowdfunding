@@ -10,17 +10,20 @@ const CampaignDetails = () => {
 
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { donate, getDonations, contract, address } = useStateContext();
+  const { donate, getDonations, contract, address, getNumberOfCampaigns } = useStateContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [amount, setAmount] = useState("");
   const [donators, setDonators] = useState([]);
+  const [noOfCampaigns, setNoOfCampaigns] = useState(0);
 
   const remainingDays = daysLeft(state.deadline);
 
   const fetchDonators = async () => {
     const data = await getDonations(state.pId);
-    // console.log(data);
+    console.log(state);
+    const numberOfCampaigns = await getNumberOfCampaigns(state.owner);
+    setNoOfCampaigns(numberOfCampaigns);
     setDonators(data);
   }
 
@@ -121,7 +124,7 @@ const CampaignDetails = () => {
                 <p
                   className="mt-[4px] font-epilogue font-normal text-[12px] text-[#808191]"
                 >
-                  10 Campaigns
+                  {noOfCampaigns > 1? noOfCampaigns + " Campaigns" : noOfCampaigns + " Campaign"}
                 </p>
               </div>
             </div>
