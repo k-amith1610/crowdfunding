@@ -5,54 +5,50 @@ import { ethers } from 'ethers';
 const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
-    const { contract } = useContract('0x31a12d7d9a658432374C38d1D90041C97FAc2e93'); // Ensure this contract address is correct
+    const { contract } = useContract('0x31a12d7d9a658432374C38d1D90041C97FAc2e93'); // Contract address
     const { mutateAsync: createCampaign } = useContractWrite(contract, 'createCampaign');
-    
-    const address = useAddress(); // Automatically fetches user's address
+
+    const address = useAddress(); // Fetches user's address
     const connect = useMetamask(); // Handles MetaMask connection
 
-    // State to track whether MetaMask is installed and connected
     const [isMetaMaskInstalled, setIsMetaMaskInstalled] = useState(false);
 
     useEffect(() => {
-        // Check if MetaMask is installed
         if (typeof window.ethereum !== 'undefined') {
-            setIsMetaMaskInstalled(true);
+            setIsMetaMaskInstalled(true); // MetaMask is installed
         } else {
-            console.error('MetaMask is not installed. Please install MetaMask.');
+            setIsMetaMaskInstalled(false);
+            console.error('MetaMask is not installed.');
         }
     }, []);
 
-    // Function to handle campaign creation
     const publishCampaign = async (form) => {
         if (!address) {
-            console.error('Please connect to MetaMask to create a campaign.');
+            console.error('Connect to MetaMask to create a campaign.');
             return;
         }
 
         try {
             const data = await createCampaign({
                 args: [
-                    address, // owner
-                    form.title, // title
-                    form.description, // description
+                    address,
+                    form.title,
+                    form.description,
                     form.target,
-                    new Date(form.deadline).getTime(), // deadline,
+                    new Date(form.deadline).getTime(),
                     form.image,
                 ],
             });
-
-            console.log("contract call success", data)
+            console.log("Campaign created successfully:", data);
         } catch (error) {
-            console.log("contract call failure", error)
+            console.error("Error creating campaign:", error);
         }
-    }
+    };
 
-    // Function to get all campaigns
     const getCampaigns = async () => {
         try {
             const campaigns = await contract.call('getCampaigns');
-            const parsedCampaigns = campaigns.map((campaign, i) => ({
+            return campaigns.map((campaign, i) => ({
                 owner: campaign.owner,
                 title: campaign.title,
                 description: campaign.description,
@@ -60,40 +56,25 @@ export const StateContextProvider = ({ children }) => {
                 deadline: campaign.deadline.toNumber(),
                 amountCollected: ethers.utils.formatEther(campaign.amountCollected.toString()),
                 image: campaign.image,
-                pId: i
+                pId: i,
             }));
-            return parsedCampaigns;
         } catch (error) {
-            console.error('Error fetching campaigns:', error);
+            console.error("Error fetching campaigns:", error);
         }
-    }
+    };
 
-    // Function to get user-specific campaigns
     const getUserCampaigns = async () => {
         try {
             const allCampaigns = await getCampaigns();
-            const filteredCampaigns = allCampaigns.filter((campaign) => campaign.owner === address);
-            return filteredCampaigns;
+            return allCampaigns.filter((campaign) => campaign.owner === address);
         } catch (error) {
-            console.error('Error fetching user campaigns:', error);
+            console.error("Error fetching user campaigns:", error);
         }
-    }
+    };
 
-    // Function to get the number of campaigns owned by a specific user
-    const getNumberOfCampaigns = async (campaignOwner) => {
-        try {
-            const allCampaigns = await getCampaigns();
-            const filteredCampaigns = allCampaigns.filter((campaign) => campaign.owner === campaignOwner);
-            return filteredCampaigns.length;
-        } catch (error) {
-            console.error('Error fetching campaign count:', error);
-        }
-    }
-
-    // Function to donate to a campaign
     const donate = async (pId, amount) => {
         if (!address) {
-            console.error('Please connect to MetaMask to donate.');
+            console.error('Connect to MetaMask to donate.');
             return;
         }
 
@@ -103,11 +84,10 @@ export const StateContextProvider = ({ children }) => {
             });
             return data;
         } catch (error) {
-            console.error('Donation failed:', error);
+            console.error('Error donating to campaign:', error);
         }
-    }
+    };
 
-    // Function to get donations for a specific campaign
     const getDonations = async (pId) => {
         try {
             const donations = await contract.call("getDonators", [pId]);
@@ -117,15 +97,14 @@ export const StateContextProvider = ({ children }) => {
             for (let i = 0; i < numberOfDonations; i++) {
                 parsedDonations.push({
                     donator: donations[0][i],
-                    donation: ethers.utils.formatEther(donations[1][i].toString())
+                    donation: ethers.utils.formatEther(donations[1][i].toString()),
                 });
             }
-
             return parsedDonations;
         } catch (error) {
             console.error('Error fetching donations:', error);
         }
-    }
+    };
 
     return (
         <StateContext.Provider
@@ -136,15 +115,14 @@ export const StateContextProvider = ({ children }) => {
                 createCampaign: publishCampaign,
                 getCampaigns,
                 getUserCampaigns,
-                getNumberOfCampaigns,
                 donate,
                 getDonations,
-                isMetaMaskInstalled, // Adding this state for MetaMask installation tracking
+                isMetaMaskInstalled,
             }}
         >
             {children}
         </StateContext.Provider>
     );
-}
+};
 
 export const useStateContext = () => useContext(StateContext);
