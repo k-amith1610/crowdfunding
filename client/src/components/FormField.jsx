@@ -1,9 +1,10 @@
 import React from 'react'
 
-const FormField = ({ labelName, placeholder, inputType, isTextArea, value, handleChange }) => {
+const FormField = ({ labelName, placeholder, inputType, isTextArea, value, handleChange, id }) => {
   return (
     <label
       className="flex-1 w-full flex flex-col"
+      id={id}
     >
       {labelName && (
         <span

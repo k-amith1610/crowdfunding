@@ -77,7 +77,7 @@ const Navbar = () => {
         <CustomButton
           btnType="button"
           title={address ? 'Create a campaign' : 'Connect'}
-          styles={address ? 'bg-[#1dc071]' : 'bg-[#8c6dfd]'}
+          styles={address ? 'bg-[#1dc071]' : 'bg-[#8928ff]'}
           handleClick={() => {
             if (address) {
               console.log(address);
@@ -164,7 +164,7 @@ const Navbar = () => {
             <CustomButton
               btnType="button"
               title={address ? 'Create a campaign' : 'Connect'}
-              styles={address ? 'bg-[#1dc071]' : 'bg-[#8c6dfd]'}
+              styles={address ? 'bg-[#1dc071]' : 'bg-[#8928ff]'}
               handleClick={() => {
                 if (address) {
                   console.log(address);

@@ -12,7 +12,7 @@ const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
     }
 
     return (
-        <div>
+        <div className="">
             <h1
                 className="font-epilogue font-semibold text-[18px]
                         text-white text-left"

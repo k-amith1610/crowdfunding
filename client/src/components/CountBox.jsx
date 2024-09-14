@@ -1,9 +1,10 @@
 import React from 'react'
 
-const CountBox = ({ title, value }) => {
+const CountBox = ({ title, value, id }) => {
     return (
         <div
             className="flex flex-col items-center w-[150px]"
+            id={id}
         >
             <h4
                 className="font-epilogue font-bold text-[30px] text-white p-3 bg-[#1c1c24]

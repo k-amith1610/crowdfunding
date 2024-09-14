@@ -5,6 +5,10 @@ import { useStateContext } from "../context"
 import { CountBox, CustomButton, Loader } from "../components"
 import { calculateBarPercentage, daysLeft } from "../utils"
 import { thirdweb } from "../assets"
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { ScrollTrigger } from 'gsap/all'
+gsap.registerPlugin(ScrollTrigger);
 
 const CampaignDetails = () => {
 
@@ -33,6 +37,80 @@ const CampaignDetails = () => {
     }
   }, [contract, address])
 
+  useGSAP(() => {
+    const timeline = gsap.timeline({ delay: 0.4 });
+
+    timeline.from("#campaignimage", {
+      opacity: 0,
+      duration: 1,
+      x: -60,
+    })
+
+    timeline.from("#countbox", {
+      opacity: 0,
+      duratoin: 1,
+      stagger: 0.2,
+      x: 60,
+    })
+
+    timeline.from("#campaignbar", {
+      opacity: 0,
+      duration: 1,
+      y: 60,
+    })
+
+
+    timeline.from("#creator", {
+      opacity: 0,
+      duration: 1,
+      y: -30,
+      stagger: 0.5,
+      scrollTrigger: {
+        trigger: "#creator",
+        start: "top 67%",
+        end: "bottom 50%",
+        scrub: 1,
+      }
+    })
+    timeline.from("#story", {
+      opacity: 0,
+      duration: 1,
+      y: -30,
+      stagger: 0.5,
+      scrollTrigger: {
+        trigger: "#story",
+        start: "top 77%",
+        end: "bottom 65%",
+        scrub: 1,
+      }
+    })
+    timeline.from("#donators", {
+      opacity: 0,
+      duration: 1,
+      y: -30,
+      stagger: 0.5,
+      scrollTrigger: {
+        trigger: "#donators",
+        start: "top 85%",
+        end: "bottom 75%",
+        scrub: 1,
+      }
+    })
+    timeline.from("#fund", {
+      opacity: 0,
+      duration: 1,
+      y: -30,
+      stagger: 0.5,
+      scrollTrigger: {
+        trigger: "#fund",
+        start: "top 65%",
+        end: "bottom 50%",
+        scrub: 1,
+      }
+    })
+
+  }, [])
+
   const handleDonate = async () => {
     setIsLoading(true);
     await donate(state.pId, amount);
@@ -54,12 +132,14 @@ const CampaignDetails = () => {
             src={state.image}
             alt="campaign"
             className="w-full h-[410px] object-cover rounded-xl"
+            id="campaignimage"
           />
           <div
-            className="relative w-full h-[5px] bg-[#3a3a43] mt-2"
+            className="relative w-full h-[5px] bg-[#3a3a43] mt-2 rounded-full"
+            id="campaignbar"
           >
             <div
-              className="absolute h-full bg-[#4acd8d]"
+              className="absolute h-full bg-[#4acd8d] rounded-full"
               style={{
                 width: `${calculateBarPercentage(state.target, state.amountCollected)}%`,
                 maxWidth: '100%'
@@ -74,14 +154,17 @@ const CampaignDetails = () => {
           <CountBox
             title="Days Left"
             value={remainingDays}
+            id="countbox"
           />
           <CountBox
             title={`Raised of ${state.target}`}
             value={state.amountCollected}
+            id="countbox"
           />
           <CountBox
             title="Total Backer"
             value={donators.length}
+            id="countbox"
           />
         </div>
       </div>
@@ -97,6 +180,7 @@ const CampaignDetails = () => {
           >
             <h4
               className="font-epilogue font-semibold text-[18px] text-white uppercase"
+              id="creator"
             >
               Creator
             </h4>
@@ -106,6 +190,7 @@ const CampaignDetails = () => {
               <div
                 className="w-[52px] h-[52px] flex items-center justify-center rounded-full 
                           bg-[#2c2f32] cursor-pointer z-10"
+                id="creator"
               >
                 <img
                   src={thirdweb}
@@ -118,13 +203,15 @@ const CampaignDetails = () => {
               >
                 <h4
                   className="font-epilogue font-semibold text-[14px] text-white break-all"
+                  id="creator"
                 >
                   {state.owner}
                 </h4>
                 <p
                   className="mt-[4px] font-epilogue font-normal text-[12px] text-[#808191]"
+                  id="creator"
                 >
-                  {noOfCampaigns > 1? noOfCampaigns + " Campaigns" : noOfCampaigns + " Campaign"}
+                  {noOfCampaigns > 1 ? noOfCampaigns + " Campaigns" : noOfCampaigns + " Campaign"}
                 </p>
               </div>
             </div>
@@ -135,6 +222,7 @@ const CampaignDetails = () => {
           >
             <h4
               className="font-epilogue font-semibold text-[18px] text-white uppercase"
+              id="story"
             >
               Story
             </h4>
@@ -144,6 +232,7 @@ const CampaignDetails = () => {
               <p
                 className="font-epilogue font-normal text-[16px] text-[#808191]
                           leading-[26px] text-justify"
+                id="story"
               >
                 {state.description}
               </p>
@@ -155,11 +244,13 @@ const CampaignDetails = () => {
           >
             <h4
               className="font-epilogue font-semibold text-[18px] text-white uppercase"
+              id="donators"
             >
               Donators
             </h4>
             <div
               className="mt-[20px] flex flex-col gap-4"
+              id="donators"
             >
               {donators.length > 0 ? donators.map((item, index) => (
                 <div
@@ -169,12 +260,14 @@ const CampaignDetails = () => {
                   <p
                     className="font-epilogue font-normal text-[16px]
                               text-[#b2b3bd] leading-[26px] break-all"
+                    id="donators"
                   >
                     {index + 1}. {item.donator}
                   </p>
                   <p
                     className="font-epilogue font-normal text-[16px]
                               text-[#808191] leading-[26px] break-all"
+                    id="donators"
                   >
                     {item.donation}
                   </p>
@@ -199,15 +292,18 @@ const CampaignDetails = () => {
         >
           <h4
             className="font-epilogue font-semibold text-[18px] text-white uppercase"
+            id="fund"
           >
             Fund
           </h4>
 
           <div
             className="mt-[20px] flex flex-col p-4 bg-[#1c1c24] rounded-[10px]"
+            id="fund"
           >
             <p
               className="font-epilogue font-medium text-[20px] leading-[30px] text-center text-[#808191]"
+              id="fund"
             >
               Fund the campaign
             </p>
@@ -223,18 +319,22 @@ const CampaignDetails = () => {
                     leading-[30px] placeholder:text-[#4b5264] rounded-[10px]"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
+                id="fund"
               />
               <div
                 className="my-[20px] p-4 bg-[#13131a] rounded-[10px]"
+                id="fund"
               >
                 <h4
                   className="font-epilogue font-semibold text-[14px] leading-[22px]
                           text-white"
+                  id="fund"
                 >
                   Back it because you believe in it.
                 </h4>
                 <p
                   className="mt-[20px] font-epilogue font-normal leading-[22px] text-[#808191]"
+                  id="fund"
                 >
                   Support the project for no reward, just because it
                   speaks to you.
@@ -243,8 +343,9 @@ const CampaignDetails = () => {
               <CustomButton
                 btnType="button"
                 title="Fund Camapaign"
-                styles="w-full bg-[#8c6dfd]"
+                styles="w-full bg-[#8928ff]"
                 handleClick={handleDonate}
+                id="fund"
               />
             </div>
           </div>

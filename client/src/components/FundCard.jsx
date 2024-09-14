@@ -9,7 +9,7 @@ const FundCard = ({ owner, title, description, target, deadline, amountCollected
     return (
         <div
             className="sm:w-[288px] w-full rounded-[15px] bg-[#1c1c24]
-                        cursor-pointer"
+                        cursor-pointer hover:scale-[1.02]"
             onClick={handleClick}
         >
             <img
